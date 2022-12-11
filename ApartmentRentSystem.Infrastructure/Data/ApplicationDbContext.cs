@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApartmentRentSystem.Data
+namespace ApartmentRentSystem.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
