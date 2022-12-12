@@ -1,5 +1,6 @@
 ﻿namespace ApartmentRentSystem.Infrastructure.Data
 {
+    using ApartmentRentSystem.Infrastructure.Data.Configuration;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,10 @@
                 .HasForeignKey(x => x.AgentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new AgentConfiguration());
 
             base.OnModelCreating(builder);
         }
