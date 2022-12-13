@@ -8,16 +8,16 @@
 
     public class HomeController : Controller
     {
-        private readonly IApartmentsService houseService;
+        private readonly IApartmentsService apartmentService;
 
-        public HomeController(IApartmentsService houseService)
+        public HomeController(IApartmentsService apartmentService)
         {
-            this.houseService = houseService;
+            this.apartmentService = apartmentService;
         }
 
         public IActionResult Index()
         {
-            var apartments = this.houseService.GetLastThree();
+            var apartments = this.apartmentService.GetLastThree();
             return this.View(apartments);
         }
         

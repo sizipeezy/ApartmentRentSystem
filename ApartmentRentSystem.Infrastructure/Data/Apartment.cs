@@ -43,6 +43,11 @@
         [ForeignKey(nameof(AgentId))]
         public Agent Agent { get; set; } = null!;
 
-        public string RenterId { get; set; }
+        public string? RenterId { get; set; }
+
+        [ForeignKey(nameof(RenterId))]
+        public ApplicationUser? Renter { get; set; }
+
+        public bool IsActive { get; set; } = true;
     }
 }

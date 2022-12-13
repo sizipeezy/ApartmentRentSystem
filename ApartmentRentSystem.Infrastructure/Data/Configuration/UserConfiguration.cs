@@ -5,19 +5,19 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-    public class UserConfiguration : IEntityTypeConfiguration<IdentityUser>
+    public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        public void Configure(EntityTypeBuilder<IdentityUser> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder.HasData(SeedUsers());
         }
 
-        private List<IdentityUser> SeedUsers()
+        private List<ApplicationUser> SeedUsers()
         {
-            var users = new List<IdentityUser>();
-            var hasher = new PasswordHasher<IdentityUser>();
+            var users = new List<ApplicationUser>();
+            var hasher = new PasswordHasher<ApplicationUser>();
 
-            var user = new IdentityUser()
+            var user = new ApplicationUser()
             {
                 Id = "dea12856-c198-4129-b3f3-b893d8395082",
                 UserName = "agent@mail.com",
@@ -31,7 +31,7 @@
 
             users.Add(user);
 
-            var user2 = new IdentityUser()
+            user = new ApplicationUser()
             {
                 Id = "6d5800ce-d726-4fc8-83d9-d6b3ac1f591e",
                 UserName = "guest@mail.com",
@@ -40,12 +40,12 @@
                 NormalizedEmail = "guest@mail.com"
             };
 
-            user2.PasswordHash =
-            hasher.HashPassword(user2, "guest123");
+            user.PasswordHash =
+            hasher.HashPassword(user, "guest123");
 
-            users.Add(user2);
+            users.Add(user);
 
-            return users;   
+            return users;
         }
     }
 }
