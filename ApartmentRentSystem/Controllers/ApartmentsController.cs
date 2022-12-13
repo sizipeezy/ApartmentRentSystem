@@ -5,8 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     public class ApartmentsController : Controller
-    {
-        public IActionResult Index() => View(new IndexViewModel());
+    { 
 
         public IActionResult All()
         {
