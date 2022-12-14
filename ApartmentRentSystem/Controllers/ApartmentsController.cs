@@ -2,6 +2,7 @@
 {
     using ApartmentRentSystem.Core.Contracts;
     using ApartmentRentSystem.Core.Models;
+    using ApartmentRentSystem.Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,15 @@
     {
         private readonly IApartmentsService apartmentsService;
         private readonly ICategoryService categoryService;
-       
-        public ApartmentsController(IApartmentsService apartmentsService, ICategoryService categoryService)
+        private readonly IAgentService agentService;
+        public ApartmentsController(
+            IApartmentsService apartmentsService, 
+            ICategoryService categoryService, 
+            IAgentService agentService)
         {
             this.apartmentsService = apartmentsService;
             this.categoryService = categoryService;
+            this.agentService = agentService;
         }
 
         public IActionResult All()
@@ -29,8 +34,11 @@
         [HttpGet]
         public IActionResult Add()
         {
-
-            return this.View();
+            var vm = new AddApartmentModel()
+            {
+                Categories = categoryService.AllCategories()
+            };
+            return this.View(vm);
         }
 
         [HttpPost]
@@ -38,6 +46,7 @@
         {
             if (!this.ModelState.IsValid)
             {
+                model.Categories = categoryService.AllCategories();
                 return View(model);
             }
 
@@ -46,6 +55,10 @@
                 this.ModelState.AddModelError(nameof(model.CategoryId),
                     "Category doesn't exists.");
             }
+
+            var agentId = agentService.GetAgentId(this.User.Id());
+
+            model.AgentId = agentId;
 
             apartmentsService.AddAsync(model);
 

@@ -36,7 +36,7 @@
         [Required]
         public int CategoryId { get; set; }
 
-        public List<CategoriesViewModel> Categories { get; set; } = new List<CategoriesViewModel>();
+        public IEnumerable<CategoriesViewModel> Categories { get; set; } = new List<CategoriesViewModel>();
         public int AgentId { get; set; }
 
         [ForeignKey(nameof(AgentId))]

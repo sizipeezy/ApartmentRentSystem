@@ -9,5 +9,7 @@
         bool UserHasRents(string userId);
 
         Task Create(string userId, string phoneNumber);
+
+        int GetAgentId(string userId);
     }
 }

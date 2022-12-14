@@ -25,19 +25,20 @@
             await this.data.SaveChangesAsync();
         }
 
-        public bool ExistsById(string agentId)
-        {
-            return this.data.Agents.Any(x => x.UserId == agentId);
-        }
+        public bool ExistsById(string agentId) =>
+        this.data.Agents.Any(x => x.UserId == agentId);
+        
 
-        public bool UserHasRents(string userId)
-        {
-            return this.data.Apartments.Any(x => x.RenterId == userId);
-        }
+        public int GetAgentId(string userId) => 
+            data.Agents.FirstOrDefault(x => x.UserId == userId).Id;
+        
 
-        public bool UserWithPhoneNumber(string phoneNumber)
-        {
-            return this.data.Agents.Any(x => x.PhoneNumber == phoneNumber);
-        }
+        public bool UserHasRents(string userId) =>
+         this.data.Apartments.Any(x => x.RenterId == userId);
+        
+
+        public bool UserWithPhoneNumber(string phoneNumber) =>
+         this.data.Agents.Any(x => x.PhoneNumber == phoneNumber);
+        
     }
 }
