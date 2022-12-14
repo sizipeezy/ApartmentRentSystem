@@ -7,5 +7,7 @@
     public interface IApartmentsService
     {
         IEnumerable<IndexViewModel> GetLastThree();
+
+        Task AddAsync(AddApartmentModel model);
     }
 }

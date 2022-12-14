@@ -1,11 +1,20 @@
 ﻿namespace ApartmentRentSystem.Controllers
 {
+    using ApartmentRentSystem.Core.Contracts;
     using ApartmentRentSystem.Core.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class ApartmentsController : Controller
-    { 
+    {
+        private readonly IApartmentsService apartmentsService;
+        private readonly ICategoryService categoryService;
+       
+        public ApartmentsController(IApartmentsService apartmentsService, ICategoryService categoryService)
+        {
+            this.apartmentsService = apartmentsService;
+            this.categoryService = categoryService;
+        }
 
         public IActionResult All()
         {
@@ -20,6 +29,7 @@
         [HttpGet]
         public IActionResult Add()
         {
+
             return this.View();
         }
 
@@ -30,6 +40,14 @@
             {
                 return View(model);
             }
+
+            if (this.categoryService.CategoryExists(model.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(model.CategoryId),
+                    "Category doesn't exists.");
+            }
+
+            apartmentsService.AddAsync(model);
 
             return RedirectToAction(nameof(All));
         }
