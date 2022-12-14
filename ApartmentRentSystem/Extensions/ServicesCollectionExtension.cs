@@ -9,6 +9,7 @@
         {
 
             services.AddScoped<IApartmentsService, ApartmentsService>();
+            services.AddScoped<IAgentService, AgentService>();
 
             return services;
         }
