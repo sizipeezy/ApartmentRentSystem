@@ -18,7 +18,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.SignIn.RequireConfirmedPhoneNumber = builder.Configuration.GetValue<bool>("Identity:RequireConfirmedPhoneNumber");
     options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:RequiredLength");
     options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:RequireNonAlphanumeric");
-    options.Password.RequireUppercase = false;
+    options.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Identity:RequireUppercase");
+    options.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:RequireDigit");
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
