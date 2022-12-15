@@ -29,8 +29,8 @@
         this.data.Agents.Any(x => x.UserId == agentId);
         
 
-        public int GetAgentId(string userId) => 
-            data.Agents.FirstOrDefault(x => x.UserId == userId).Id;
+        public int GetAgentId(string userId) =>
+             data.Agents.FirstOrDefault(a => a.UserId == userId)?.Id ?? 0;
         
 
         public bool UserHasRents(string userId) =>

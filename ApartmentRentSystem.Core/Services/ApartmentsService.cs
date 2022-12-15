@@ -16,21 +16,21 @@
             this.data = db;
         }
 
-        public async Task AddAsync(AddApartmentModel model)
+        public void AddAsync(AddApartmentModel model, int agentId)
         {
             var apartment = new Apartment()
             {
-                ImageUrl = model.ImageUrl,
-                Description = model.Description,
-                PricePerMonth = model.PricePerMonth,
-                CategoryId = model.CategoryId,
-                Title = model.Title,
                 Address = model.Address,
-                AgentId = model.AgentId,    
+                CategoryId = model.CategoryId,
+                Description = model.Description,
+                ImageUrl = model.ImageUrl,
+                PricePerMonth = model.PricePerMonth,
+                Title = model.Title,
+                AgentId = agentId
             };
 
-            await this.data.Apartments.AddAsync(apartment);
-            await this.data.SaveChangesAsync();
+            this.data.Apartments.Add(apartment);
+            data.SaveChanges();
         }
 
         public IEnumerable<IndexViewModel> GetLastThree()

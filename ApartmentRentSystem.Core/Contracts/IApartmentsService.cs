@@ -8,6 +8,6 @@
     {
         IEnumerable<IndexViewModel> GetLastThree();
 
-        Task AddAsync(AddApartmentModel model);
+        void AddAsync(AddApartmentModel model, int agentId);
     }
 }

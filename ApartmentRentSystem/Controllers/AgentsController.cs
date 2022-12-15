@@ -1,5 +1,6 @@
 ﻿namespace ApartmentRentSystem.Controllers
 {
+    using ApartmentRentSystem.Core.Constants;
     using ApartmentRentSystem.Core.Contracts;
     using ApartmentRentSystem.Core.Models.Agents;
     using ApartmentRentSystem.Infrastructure;
@@ -23,39 +24,45 @@
                 return BadRequest();
             }
 
-            return this.View();
+            var model = new BecomeAgentFormModel();
+
+            return this.View(model);
         }
 
         [HttpPost]
-        public IActionResult Become(BecomeAgentFormModel model)
+        public async Task<IActionResult> Become(BecomeAgentFormModel model)
         {
-            var userId = this.User.Id();
+            var userId = User.Id();
 
-            if (this.agentService.ExistsById(userId))
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return View(model);
             }
 
-            if (this.agentService.UserWithPhoneNumber(model.PhoneNumber))
+            if (agentService.ExistsById(userId))
             {
-                ModelState.AddModelError(nameof(model.PhoneNumber),
-                    "Phone number already exists.");
+                TempData[MessageConstant.ErrorMessage] = "Вие вече сте Агент";
+
+                return RedirectToAction("Index", "Home");
             }
 
-            if (this.agentService.UserHasRents(userId))
+            if (agentService.UserWithPhoneNumber(model.PhoneNumber))
             {
-                ModelState.AddModelError(nameof(userId),
-                    "User shouldn't have rents if wanna become Agent.");
+                TempData[MessageConstant.ErrorMessage] = "Телефона вече съществува";
+
+                return RedirectToAction("Index", "Home");
             }
 
-            if (!this.ModelState.IsValid)
+            if (agentService.UserHasRents(userId))
             {
-                return this.View(model);
+                TempData[MessageConstant.ErrorMessage] = "Не трябва да имате наеми за да станете агент";
+
+                return RedirectToAction("Index", "Home");
             }
 
-            agentService.Create(userId, model.PhoneNumber);
+            await agentService.Create(userId, model.PhoneNumber);
 
-            return this.RedirectToAction(nameof(ApartmentsController.All), "Apartments");
+            return RedirectToAction("All", "Apartments");
         }
     }
 }

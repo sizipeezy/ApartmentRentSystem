@@ -12,8 +12,8 @@
         private readonly ICategoryService categoryService;
         private readonly IAgentService agentService;
         public ApartmentsController(
-            IApartmentsService apartmentsService, 
-            ICategoryService categoryService, 
+            IApartmentsService apartmentsService,
+            ICategoryService categoryService,
             IAgentService agentService)
         {
             this.apartmentsService = apartmentsService;
@@ -34,11 +34,10 @@
         [HttpGet]
         public IActionResult Add()
         {
-            var vm = new AddApartmentModel()
+            return this.View(new AddApartmentModel()
             {
-                Categories = categoryService.AllCategories()
-            };
-            return this.View(vm);
+                ApartmentCategories = categoryService.AllCategories()
+            });
         }
 
         [HttpPost]
@@ -46,11 +45,11 @@
         {
             if (!this.ModelState.IsValid)
             {
-                model.Categories = categoryService.AllCategories();
+                model.ApartmentCategories = categoryService.AllCategories();
                 return View(model);
             }
 
-            if (this.categoryService.CategoryExists(model.CategoryId))
+            if (!this.categoryService.CategoryExists(model.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(model.CategoryId),
                     "Category doesn't exists.");
@@ -58,9 +57,7 @@
 
             var agentId = agentService.GetAgentId(this.User.Id());
 
-            model.AgentId = agentId;
-
-            apartmentsService.AddAsync(model);
+            apartmentsService.AddAsync(model, agentId);
 
             return RedirectToAction(nameof(All));
         }

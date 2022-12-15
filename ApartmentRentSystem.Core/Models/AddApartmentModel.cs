@@ -1,45 +1,36 @@
 ﻿namespace ApartmentRentSystem.Core.Models
 {
     using ApartmentRentSystem.Core.Models.Categories;
-    using ApartmentRentSystem.Infrastructure;
-    using ApartmentRentSystem.Infrastructure.Data;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     public class AddApartmentModel
     {
         public int Id { get; set; }
 
         [Required]
-        [StringLength(Constants.Apartment.TitleMaxLength, MinimumLength = Constants.Apartment.TitleMinLength)]
+        [StringLength(50, MinimumLength = 10)]
         public string Title { get; set; } = null!;
 
         [Required]
-        [StringLength(Constants.Apartment.AddressMaxLength, MinimumLength = Constants.Apartment.AddressMinLength)]
+        [StringLength(150, MinimumLength = 30)]
         public string Address { get; set; } = null!;
 
         [Required]
-        [StringLength(Constants.Apartment.DescriptionMax, MinimumLength = Constants.Apartment.DescriptionLow)]
+        [StringLength(500, MinimumLength = 50)]
         public string Description { get; set; } = null!;
 
         [Required]
-        [StringLength(200)]
+        [Display(Name = "Image URL")]
         public string ImageUrl { get; set; } = null!;
 
         [Required]
-        [Column(TypeName = "money")]
-        [Precision(18, 2)]
+        [Display(Name = "Price per month")]
+        [Range(0.00, 2000.00, ErrorMessage = "Price per month must be a positive number and less than {2} leva")]
         public decimal PricePerMonth { get; set; }
 
-        [Required]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
-        public IEnumerable<CategoriesViewModel> Categories { get; set; } = new List<CategoriesViewModel>();
-        public int AgentId { get; set; }
-
-        [ForeignKey(nameof(AgentId))]
-        public Agent Agent { get; set; } = null!;
+        public IEnumerable<CategoriesViewModel> ApartmentCategories { get; set; } = new List<CategoriesViewModel>();
     }
 }

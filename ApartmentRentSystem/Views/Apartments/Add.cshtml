@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label asp-for="CategoryId"></label>
                 <select asp-for="CategoryId" class="form-control">
-                    @foreach (var category in Model.Categories)
+                    @foreach (var category in Model.ApartmentCategories)
                     {
                             <option value="@category.Id">@category.Name</option>
                     }
@@ -45,3 +45,7 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+}
