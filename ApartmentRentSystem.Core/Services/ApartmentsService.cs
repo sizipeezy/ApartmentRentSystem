@@ -74,6 +74,20 @@
             return result;
         }
 
+        public IEnumerable<ApartmentModel> AllApartmentsByAgent(int agentId)
+        {
+            var apartments = this.data.Apartments.Where(x => x.AgentId == agentId).ToList();
+
+            return ProjectToApartment(apartments);
+        }
+
+        public IEnumerable<ApartmentModel> AllApartmentsByUser(string userId)
+        {
+            var apartments = this.data.Apartments.Where(x => x.RenterId == userId).ToList();
+
+            return ProjectToApartment(apartments);
+        }
+
         public IEnumerable<IndexViewModel> GetLastThree()
             => this.data.Apartments.OrderByDescending(x => x.Id)
             .Select(x => new IndexViewModel
@@ -82,5 +96,22 @@
                 ImageUrl = x.ImageUrl,
                 Title = x.Title
             }).Take(3).ToList();
+
+        public List<ApartmentModel> ProjectToApartment(List<Apartment> apartments)
+        {
+            var result = apartments
+                .Select(x => new ApartmentModel
+                {
+                    Id = x.Id,
+                    Address = x.Address,
+                    ImageUrl = x.ImageUrl,
+                    IsRented = x.RenterId != null,
+                    PricePerMonth = x.PricePerMonth,
+                    Title = x.Title
+                })
+                .ToList();
+
+            return result;
+        }
     }
 }

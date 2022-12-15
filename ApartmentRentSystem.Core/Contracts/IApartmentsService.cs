@@ -10,6 +10,10 @@
 
         void AddAsync(AddApartmentModel model, int agentId);
 
+        IEnumerable<ApartmentModel> AllApartmentsByUser(string userId);
+
+        IEnumerable<ApartmentModel> AllApartmentsByAgent(int agentId);
+
         ApartmentQueryModel All(
             string? category = null,
             string? searchTerm = null,

@@ -1,1 +1,22 @@
-﻿
+﻿@model IEnumerable<ApartmentModel>
+
+@{
+    ViewBag.Title = "Mine Apartments";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+@if (Model.Any())
+{
+        <div class="row">
+        @foreach (var apartment in Model)
+        {
+          <partial name="_ApartmentsPartial" model="@apartment" />
+        }
+        </div>
+}
+else
+{
+        <h3 class="text-center">You have no apartments yet!</h3>
+}

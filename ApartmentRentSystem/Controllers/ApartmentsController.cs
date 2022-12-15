@@ -5,6 +5,7 @@
     using ApartmentRentSystem.Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.VisualBasic;
 
     public class ApartmentsController : Controller
     {
@@ -39,9 +40,24 @@
             return this.View(model);
         }
 
+        [Authorize]
         public IActionResult Mine()
         {
-            return this.View();
+            var userId = this.User.Id();
+            IEnumerable<ApartmentModel> apartments = null;
+
+            if (this.agentService.ExistsById(userId))
+            {
+                var currentAgentId = this.agentService.GetAgentId(userId);
+
+                apartments = this.apartmentsService.AllApartmentsByAgent(currentAgentId);
+            }
+            else
+            {
+               apartments = this.apartmentsService.AllApartmentsByUser(userId);
+            }
+
+            return this.View(apartments);
         }
 
         [HttpGet]
