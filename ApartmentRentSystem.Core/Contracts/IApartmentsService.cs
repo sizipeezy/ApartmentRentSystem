@@ -10,7 +10,7 @@
 
         void AddAsync(AddApartmentModel model, int agentId);
 
-        AllApartmentsQueryModel All(
+        ApartmentQueryModel All(
             string? category = null,
             string? searchTerm = null,
             ApartmentSorting sorting = ApartmentSorting.Newest,

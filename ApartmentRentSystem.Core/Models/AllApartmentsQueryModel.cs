@@ -13,7 +13,7 @@
 
         public ApartmentSorting ApartmentSorting { get; set; }
 
-        public int CurrnetPage { get; set; } = 1;
+        public int CurrentPage { get; set; } = 1;
 
         public int TotalApartmentsCount { get; set; }
 

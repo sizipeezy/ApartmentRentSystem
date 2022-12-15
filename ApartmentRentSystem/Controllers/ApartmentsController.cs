@@ -22,20 +22,19 @@
         }
 
         [HttpGet]
-
         public IActionResult All([FromQuery]AllApartmentsQueryModel model)
         {
             var result = apartmentsService.All(
                 model.Category,
                 model.SearchTerm,
                 model.ApartmentSorting,
-                model.CurrnetPage,
+                model.CurrentPage,
                 AllApartmentsQueryModel.ApartmentsPerPage
                 );
 
-            model.TotalApartmentsCount = result.TotalApartmentsCount;
+            model.TotalApartmentsCount = result.TotalApartments;
             model.Categories = categoryService.AllCategoryNames();
-            model.Apartments = result.Apartments;
+            model.Apartments = result.AllApartments;
 
             return this.View(model);
         }
@@ -84,27 +83,28 @@
 
 
         [HttpPost]
-        public IActionResult Details(int id, ApartmentDetailsModel model)
+        public IActionResult Details()// ApartmentDetailsModel model)
         {
             //Iguard check for the Id
 
-            if (!this.ModelState.IsValid)
-            {
-                return View(model);
-            }
+           //if (!this.ModelState.IsValid)
+           //{
+           //    return View(model);
+           //}
 
             return RedirectToAction(nameof(All));
 
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit()
         {
-            return this.View(new ApartmentEditModel());   
+            //return this.View(new ApartmentEditModel());   
+            return this.View();
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, ApartmentEditModel model)
+        public IActionResult Edit(int id)// ApartmentEditModel model)
         {
             return this.RedirectToAction(nameof(Details), new { id = id });
         }
@@ -112,12 +112,12 @@
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            return this.View(new ApartmentDetailsModel());
+            return this.View();
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Delete(ApartmentDetailsModel model)
+        public IActionResult Delete()//ApartmentDetailsModel model)
         {
             return this.RedirectToAction(nameof(All));
         }

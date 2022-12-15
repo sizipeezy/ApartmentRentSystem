@@ -31,9 +31,9 @@
             data.SaveChanges();
         }
 
-        public AllApartmentsQueryModel All(string? category = null, string? searchTerm = null, ApartmentSorting sorting = ApartmentSorting.Newest, int currentPage = 1, int apartmentsPerPage = 1)
+        public ApartmentQueryModel All(string? category = null, string? searchTerm = null, ApartmentSorting sorting = ApartmentSorting.Newest, int currentPage = 1, int apartmentsPerPage = 1)
         {
-            var result = new AllApartmentsQueryModel();
+            var result = new ApartmentQueryModel();
             var apartmentsQuery = this.data.Apartments.Where(x => x.IsActive).AsQueryable();
 
             if (!string.IsNullOrEmpty(category))
@@ -55,7 +55,7 @@
                 _ => apartmentsQuery.OrderByDescending(x => x.Id)
             };
 
-            result.Apartments = apartmentsQuery
+            result.AllApartments = apartmentsQuery
                 .Skip((currentPage - 1) * apartmentsPerPage)
                 .Take(apartmentsPerPage)
                 .Select(x => new ApartmentModel()
@@ -69,7 +69,7 @@
                 })
                 .ToList();
 
-            result.TotalApartmentsCount = apartmentsQuery.Count();
+            result.TotalApartments = apartmentsQuery.Count();
 
             return result;
         }
