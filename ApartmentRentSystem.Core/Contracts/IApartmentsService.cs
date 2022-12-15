@@ -9,5 +9,12 @@
         IEnumerable<IndexViewModel> GetLastThree();
 
         void AddAsync(AddApartmentModel model, int agentId);
+
+        AllApartmentsQueryModel All(
+            string? category = null,
+            string? searchTerm = null,
+            ApartmentSorting sorting = ApartmentSorting.Newest,
+            int currentPage = 1,
+            int housesPerPage = 1);
     }
 }

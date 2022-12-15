@@ -21,9 +21,23 @@
             this.agentService = agentService;
         }
 
-        public IActionResult All()
+        [HttpGet]
+
+        public IActionResult All([FromQuery]AllApartmentsQueryModel model)
         {
-            return this.View();
+            var result = apartmentsService.All(
+                model.Category,
+                model.SearchTerm,
+                model.ApartmentSorting,
+                model.CurrnetPage,
+                AllApartmentsQueryModel.ApartmentsPerPage
+                );
+
+            model.TotalApartmentsCount = result.TotalApartmentsCount;
+            model.Categories = categoryService.AllCategoryNames();
+            model.Apartments = result.Apartments;
+
+            return this.View(model);
         }
 
         public IActionResult Mine()

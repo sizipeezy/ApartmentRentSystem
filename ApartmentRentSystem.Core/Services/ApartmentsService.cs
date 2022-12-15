@@ -2,10 +2,8 @@
 {
     using ApartmentRentSystem.Core.Contracts;
     using ApartmentRentSystem.Core.Models;
-    using ApartmentRentSystem.Core.Models.Categories;
     using ApartmentRentSystem.Infrastructure.Data;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
 
     public class ApartmentsService : IApartmentsService
     {
@@ -31,6 +29,49 @@
 
             this.data.Apartments.Add(apartment);
             data.SaveChanges();
+        }
+
+        public AllApartmentsQueryModel All(string? category = null, string? searchTerm = null, ApartmentSorting sorting = ApartmentSorting.Newest, int currentPage = 1, int apartmentsPerPage = 1)
+        {
+            var result = new AllApartmentsQueryModel();
+            var apartmentsQuery = this.data.Apartments.Where(x => x.IsActive).AsQueryable();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                apartmentsQuery = this.data.Apartments.Where(x => x.Category.Name == category);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                apartmentsQuery = this.data.Apartments.Where(x => x.Title.StartsWith(searchTerm.ToLower()));
+            }
+
+            apartmentsQuery = sorting switch
+            {
+                ApartmentSorting.Price => apartmentsQuery
+                    .OrderBy(x => x.PricePerMonth),
+                ApartmentSorting.NotRented => apartmentsQuery
+                 .OrderBy(x => x.RenterId != null),
+                _ => apartmentsQuery.OrderByDescending(x => x.Id)
+            };
+
+            result.Apartments = apartmentsQuery
+                .Skip((currentPage - 1) * apartmentsPerPage)
+                .Take(apartmentsPerPage)
+                .Select(x => new ApartmentModel()
+                {
+                    Id = x.Id,
+                    Address = x.Address,
+                    ImageUrl = x.ImageUrl,
+                    IsRented = x.RenterId != null,
+                    PricePerMonth = x.PricePerMonth,
+                    Title = x.Title
+                })
+                .ToList();
+
+            result.TotalApartmentsCount = apartmentsQuery.Count();
+
+            return result;
         }
 
         public IEnumerable<IndexViewModel> GetLastThree()

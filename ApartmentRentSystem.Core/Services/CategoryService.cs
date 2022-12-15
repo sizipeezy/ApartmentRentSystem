@@ -23,5 +23,12 @@
                   Id = x.Id,
                   Name = x.Name
               }).ToList();
+
+        public IEnumerable<string> AllCategoryNames() =>
+            data.Categories
+            .Select(c => c.Name)
+            .Distinct()
+            .ToList();
+
     }
 }

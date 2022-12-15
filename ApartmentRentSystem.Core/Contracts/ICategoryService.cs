@@ -7,5 +7,7 @@
         bool CategoryExists(int categoryId);
 
         IEnumerable<CategoriesViewModel> AllCategories();
+
+        IEnumerable<string> AllCategoryNames();
     }
 }
