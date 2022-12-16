@@ -11,6 +11,7 @@
             services.AddScoped<IApartmentsService, ApartmentsService>();
             services.AddScoped<IAgentService, AgentService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IRentService, RentService>();
 
             return services;
         }

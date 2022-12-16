@@ -5,21 +5,23 @@
     using ApartmentRentSystem.Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.VisualBasic;
 
     public class ApartmentsController : Controller
     {
         private readonly IApartmentsService apartmentsService;
         private readonly ICategoryService categoryService;
         private readonly IAgentService agentService;
+        private readonly IRentService rentService;
         public ApartmentsController(
             IApartmentsService apartmentsService,
             ICategoryService categoryService,
-            IAgentService agentService)
+            IAgentService agentService,
+            IRentService rentService)
         {
             this.apartmentsService = apartmentsService;
             this.categoryService = categoryService;
             this.agentService = agentService;
+            this.rentService = rentService;
         }
 
         [HttpGet]
@@ -196,6 +198,23 @@
         [HttpPost]
         public  IActionResult Rent(int id)
         {
+            if (this.rentService.IsRented(id))
+            {
+                return BadRequest();
+            }
+
+            if (!this.apartmentsService.Exists(id))
+            {
+                return BadRequest();
+            }
+
+            if(this.agentService.ExistsById(this.User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            this.rentService.Rent(id, this.User.Id());
+
             return this.RedirectToAction(nameof(Mine));
         }
 
