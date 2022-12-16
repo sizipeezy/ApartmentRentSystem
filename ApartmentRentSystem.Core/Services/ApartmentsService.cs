@@ -77,7 +77,8 @@
 
         public IEnumerable<ApartmentModel> AllApartmentsByAgent(int agentId)
         {
-            var apartments = this.data.Apartments.Where(x => x.AgentId == agentId).ToList();
+            var apartments = this.data.Apartments.Where(c => c.IsActive)
+                .Where(c => c.AgentId == agentId).ToList();
 
             return ProjectToApartment(apartments);
         }

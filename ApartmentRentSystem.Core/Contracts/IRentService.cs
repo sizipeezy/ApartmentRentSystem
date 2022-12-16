@@ -7,5 +7,7 @@
         bool ByUserId(int apartmentId, string userId);
 
         void Rent(int apartmentId, string userId);
+
+        void Leave(int apartmentId);
     }
 }

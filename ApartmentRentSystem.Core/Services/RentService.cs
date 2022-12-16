@@ -7,7 +7,7 @@
 
     public class RentService : IRentService
     {
-       private readonly ApplicationDbContext data;
+        private readonly ApplicationDbContext data;
 
         public RentService(ApplicationDbContext data)
         {
@@ -18,12 +18,12 @@
         {
             var apartment = this.data.Apartments.Find(apartmentId);
 
-            if(apartment == null)
+            if (apartment == null)
             {
                 return false;
             }
 
-            if(apartment.RenterId != userId)
+            if (apartment.RenterId != userId)
             {
                 return false;
             }
@@ -32,6 +32,15 @@
         }
 
         public bool IsRented(int id) => this.data.Apartments.Find(id).RenterId != null;
+
+        public void Leave(int apartmentId)
+        {
+            var apartment = this.data.Apartments.Find(apartmentId);
+
+            apartment.RenterId = null;
+
+            this.data.SaveChanges();
+        }
 
         public void Rent(int apartmentId, string userId)
         {

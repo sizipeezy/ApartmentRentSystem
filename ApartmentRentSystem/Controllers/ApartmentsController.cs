@@ -208,7 +208,7 @@
                 return BadRequest();
             }
 
-            if(this.agentService.ExistsById(this.User.Id()))
+            if(!this.agentService.ExistsById(this.User.Id()))
             {
                 return Unauthorized();
             }
@@ -221,6 +221,18 @@
         [HttpPost]
         public IActionResult Leave(int id)
         {
+            if (!this.apartmentsService.Exists(id))
+            {
+                return BadRequest();
+            }
+
+            if(!this.rentService.ByUserId(id, this.User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            this.rentService.Leave(id);
+
             return this.RedirectToAction(nameof(Mine));
         }
     }

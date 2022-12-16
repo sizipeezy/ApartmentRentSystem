@@ -21,7 +21,7 @@
                     <p></p>
                 @if (!Model.IsRented)
                 {
-                            <form class="input-group-sm" asp-area="" asp-controller="House"
+                                    <form class="input-group-sm" asp-area="" asp-controller="Apartments"
                   asp-action="Rent" asp-route-id="@Model.Id" method="post">
                                 <input class="btn btn-primary" type="submit" value="Rent" />
                             </form>
