@@ -5,6 +5,7 @@
 
     public interface IApartmentsService
     {
+        void Delete(int id);
         void Edit(int apartmentId, AddApartmentModel model);
         bool Exists(int id);
         ApartmentDetailsModel ApartmentDetailsById(int id);

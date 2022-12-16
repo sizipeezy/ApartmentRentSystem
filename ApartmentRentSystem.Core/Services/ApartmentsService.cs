@@ -112,6 +112,15 @@
             return apartment;
         }
 
+        public void Delete(int id)
+        {
+            var apartment = this.data.Apartments.FirstOrDefault(x => x.Id == id);
+
+            this.data.Apartments.Remove(apartment);
+
+            this.data.SaveChanges();
+        }
+
         public void Edit(int apartmentId, AddApartmentModel model)
         {
             var apartment = this.data.Apartments.Find(apartmentId);

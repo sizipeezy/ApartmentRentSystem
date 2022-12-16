@@ -164,13 +164,32 @@
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            return this.View();
+            if (!this.apartmentsService.Exists(id))
+            {
+                return BadRequest();
+            }
+
+            var viewModel = apartmentsService.ApartmentDetailsById(id);
+
+            return this.View(viewModel);
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Delete()//ApartmentDetailsModel model)
+        public IActionResult Delete(int id, ApartmentDetailsModel model)
         {
+            if (!this.apartmentsService.Exists(id))
+            {
+                return BadRequest();
+            }
+
+            if (!this.agentService.HasAgentWithId(model.Id, this.User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            this.apartmentsService.Delete(id);
+
             return this.RedirectToAction(nameof(All));
         }
 
