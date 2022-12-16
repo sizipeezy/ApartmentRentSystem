@@ -30,6 +30,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
 else
@@ -37,6 +38,8 @@ else
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+app.UseStatusCodePagesWithRedirects("/Home/NotFound?statusCode={0}");
 
 app.UseHttpsRedirection()
     .UseStaticFiles()
