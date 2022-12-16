@@ -94,21 +94,15 @@
         [HttpGet]
         public IActionResult Details(int id)
         {
-            return this.View();
-        }
+            if (!this.apartmentsService.Exists(id))
+            {
+                return BadRequest();
+            }
 
+            var apartment = this.apartmentsService.ApartmentDetailsById(id);
 
-        [HttpPost]
-        public IActionResult Details()// ApartmentDetailsModel model)
-        {
-            //Iguard check for the Id
+            return this.View(apartment);
 
-           //if (!this.ModelState.IsValid)
-           //{
-           //    return View(model);
-           //}
-
-            return RedirectToAction(nameof(All));
 
         }
 

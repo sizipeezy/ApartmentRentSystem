@@ -6,6 +6,9 @@
 
     public interface IApartmentsService
     {
+        bool Exists(int id);
+        ApartmentDetailsModel ApartmentDetailsById(int id);
+
         IEnumerable<IndexViewModel> GetLastThree();
 
         void AddAsync(AddApartmentModel model, int agentId);

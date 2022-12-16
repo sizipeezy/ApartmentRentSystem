@@ -2,6 +2,7 @@
 {
     using ApartmentRentSystem.Core.Contracts;
     using ApartmentRentSystem.Core.Models;
+    using ApartmentRentSystem.Core.Models.Agents;
     using ApartmentRentSystem.Infrastructure.Data;
     using System.Collections.Generic;
 
@@ -87,6 +88,31 @@
 
             return ProjectToApartment(apartments);
         }
+
+        public ApartmentDetailsModel ApartmentDetailsById(int id)
+        {
+            var apartment = this.data.Apartments.Where(x => x.Id == id)
+                .Select(x => new ApartmentDetailsModel
+                {
+                    Id = x.Id,
+                    Address = x.Address,
+                    Category = x.Category.Name,
+                    Description = x.Description,
+                    ImageUrl = x.ImageUrl,
+                    Title = x.Title,
+                    PricePerMonth = x.PricePerMonth,
+                    Agent = new AgentModel
+                    {
+                        Email = x.Agent.User.Email,
+                        PhoneNumber = x.Agent.PhoneNumber
+                    }
+
+                }).FirstOrDefault();
+
+            return apartment;
+        }
+
+        public bool Exists(int id) => this.data.Apartments.Any(x => x.Id == id);
 
         public IEnumerable<IndexViewModel> GetLastThree()
             => this.data.Apartments.OrderByDescending(x => x.Id)
