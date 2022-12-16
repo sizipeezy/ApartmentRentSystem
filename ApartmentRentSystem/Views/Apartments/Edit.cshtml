@@ -1,0 +1,14 @@
+﻿@model AddApartmentModel
+
+@{
+    ViewBag.Title = "Edit Apartment";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<partial name="_ApartmentFormPartial" model="@Model" />
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}

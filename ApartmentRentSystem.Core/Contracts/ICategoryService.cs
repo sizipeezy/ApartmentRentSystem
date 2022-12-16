@@ -9,5 +9,7 @@
         IEnumerable<CategoriesViewModel> AllCategories();
 
         IEnumerable<string> AllCategoryNames();
+
+        int GetApartmentCategoryId(int apartmentId);
     }
 }

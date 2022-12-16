@@ -112,6 +112,20 @@
             return apartment;
         }
 
+        public void Edit(int apartmentId, AddApartmentModel model)
+        {
+            var apartment = this.data.Apartments.Find(apartmentId);
+
+            apartment.Description = model.Description;
+            apartment.ImageUrl = model.ImageUrl;
+            apartment.PricePerMonth = model.PricePerMonth;
+            apartment.Title = model.Title;
+            apartment.Address = model.Address;
+            apartment.CategoryId = model.CategoryId;
+
+            this.data.SaveChanges();
+        }
+
         public bool Exists(int id) => this.data.Apartments.Any(x => x.Id == id);
 
         public IEnumerable<IndexViewModel> GetLastThree()

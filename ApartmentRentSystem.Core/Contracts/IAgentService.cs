@@ -11,5 +11,7 @@
         Task Create(string userId, string phoneNumber);
 
         int GetAgentId(string userId);
+
+        bool HasAgentWithId(int apartmentId, string agentId);
     }
 }

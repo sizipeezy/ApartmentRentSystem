@@ -3,9 +3,9 @@
     using ApartmentRentSystem.Core.Models;
     using System.Collections.Generic;
 
-
     public interface IApartmentsService
     {
+        void Edit(int apartmentId, AddApartmentModel model);
         bool Exists(int id);
         ApartmentDetailsModel ApartmentDetailsById(int id);
 

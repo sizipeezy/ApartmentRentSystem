@@ -30,5 +30,8 @@
             .Distinct()
             .ToList();
 
+        public int GetApartmentCategoryId(int apartmentId) =>
+            this.data.Apartments.Find(apartmentId).CategoryId;
+     
     }
 }

@@ -107,15 +107,57 @@
         }
 
         [HttpGet]
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
-            //return this.View(new ApartmentEditModel());   
-            return this.View();
+            if (!this.apartmentsService.Exists(id))
+            { 
+                return BadRequest();
+            }
+
+            var apartment = this.apartmentsService.ApartmentDetailsById(id);
+
+            var categoryId = this.categoryService.GetApartmentCategoryId(apartment.Id);
+
+            var apartmentModel = new AddApartmentModel
+            {
+                Id = apartment.Id,
+                Address = apartment.Address,
+                CategoryId = categoryId,
+                Description = apartment.Description,
+                PricePerMonth = apartment.PricePerMonth,
+                ImageUrl = apartment.ImageUrl,
+                ApartmentCategories = this.categoryService.AllCategories(),
+                Title = apartment.Title
+            };
+
+            return this.View(apartmentModel); 
         }
 
         [HttpPost]
-        public IActionResult Edit(int id)// ApartmentEditModel model)
+        public IActionResult Edit(int id, AddApartmentModel model)
         {
+            if (!this.apartmentsService.Exists(id))
+            {
+                return BadRequest();
+            }
+
+            if(!this.agentService.HasAgentWithId(id, this.User.Id()))
+            {
+                return Unauthorized();
+            }
+
+            if (!this.categoryService.CategoryExists(model.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(model.CategoryId), "category doesn't exists.");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            this.apartmentsService.Edit(id, model);
+
             return this.RedirectToAction(nameof(Details), new { id = id });
         }
 
