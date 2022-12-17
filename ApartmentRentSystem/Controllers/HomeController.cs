@@ -19,6 +19,7 @@
         public IActionResult Index()
         {
             var apartments = this.apartmentService.GetLastThree();
+
             return this.View(apartments);
         }
         
