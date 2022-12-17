@@ -3,7 +3,7 @@
     using ApartmentRentSystem.Core.Models.Categories;
     using System.ComponentModel.DataAnnotations;
 
-    public class AddApartmentModel
+    public class AddApartmentModel : IApartmentModel
     {
         public int Id { get; set; }
 

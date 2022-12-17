@@ -144,7 +144,8 @@
             {
                 Id = x.Id,
                 ImageUrl = x.ImageUrl,
-                Title = x.Title
+                Title = x.Title,
+                Address = x.Address
             }).Take(3).ToList();
 
         public List<ApartmentModel> ProjectToApartment(List<Apartment> apartments)

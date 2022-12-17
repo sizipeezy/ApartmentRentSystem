@@ -91,7 +91,7 @@
 
             apartmentsService.AddAsync(model, agentId);
 
-            return RedirectToAction(nameof(All));
+            return this.RedirectToAction(nameof(Details), new { id = model.Id, information = model.GetInformation() });
         }
 
         [HttpGet]
@@ -167,7 +167,7 @@
 
             this.apartmentsService.Edit(id, model);
 
-            return this.RedirectToAction(nameof(Details), new { id = id });
+            return this.RedirectToAction(nameof(Details), new { id = id , information = model.GetInformation()});
         }
 
         [HttpGet]

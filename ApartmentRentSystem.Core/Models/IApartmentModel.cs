@@ -1,10 +1,10 @@
 ﻿namespace ApartmentRentSystem.Core.Models
 {
 
-    public class IApartmentModel
+    public interface IApartmentModel
     {
-        public string Title { get; set; } = null!;
+        public string Title { get; }
 
-        public string Address { get; set; } = null!;
+        public string Address { get; }
     }
 }
