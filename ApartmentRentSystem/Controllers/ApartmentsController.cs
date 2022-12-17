@@ -2,6 +2,7 @@
 {
     using ApartmentRentSystem.Core.Contracts;
     using ApartmentRentSystem.Core.Models;
+    using ApartmentRentSystem.Extensions;
     using ApartmentRentSystem.Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -94,14 +95,20 @@
         }
 
         [HttpGet]
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, string information)
         {
             if (!this.apartmentsService.Exists(id))
             {
                 return BadRequest();
             }
 
+
             var apartment = this.apartmentsService.ApartmentDetailsById(id);
+
+            if(information != apartment.GetInformation())
+            {
+                return BadRequest();
+            }
 
             return this.View(apartment);
 

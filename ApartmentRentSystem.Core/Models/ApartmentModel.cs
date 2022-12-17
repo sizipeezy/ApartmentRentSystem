@@ -3,7 +3,7 @@
     using System.ComponentModel;
 
 
-    public class ApartmentModel
+    public class ApartmentModel : IApartmentModel
     {
         public int Id { get; set; }
 

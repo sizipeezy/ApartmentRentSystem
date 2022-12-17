@@ -1,6 +1,6 @@
 ﻿namespace ApartmentRentSystem.Core.Models
 {
-    public class IndexViewModel
+    public class IndexViewModel : IApartmentModel
     {
         public int Id { get; set; }
 
