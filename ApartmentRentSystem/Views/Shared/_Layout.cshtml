@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using ApartmentRentSystem.Core.Contracts
+@using ApartmentRentSystem.Infrastructure
+@inject IAgentService service;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -27,9 +30,12 @@
                            <li class="nav-item text-dark">
                               <a class="nav-link text-dark" asp-area="" asp-action="Mine" asp-controller="Apartments">My Apartments</a>
                            </li>
-                           <li class="nav-item">
+                           if(service.ExistsById(this.User.Id()))
+                           {
+                            <li class="nav-item">
                               <a class="nav-link  text-dark" asp-area="" asp-action="Add" asp-controller="Apartments">Add Apartment</a>
                            </li>
+                           }
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

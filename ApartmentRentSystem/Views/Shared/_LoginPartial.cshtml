@@ -1,14 +1,20 @@
-﻿@using ApartmentRentSystem.Infrastructure.Data
+﻿@using ApartmentRentSystem.Core.Contracts
+@using ApartmentRentSystem.Infrastructure
+@using ApartmentRentSystem.Infrastructure.Data
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject IAgentService service
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="" asp-controller="Agents" asp-action="Become">Become Agent</a>
-    </li>
+    if (service.ExistsById(this.User.Id()))
+    {
+        <li class="nav-item">
+            <a  class="nav-link text-dark" asp-area="" asp-controller="Agents" asp-action="Become">Become Agent</a>
+        </li>
+    }
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>
