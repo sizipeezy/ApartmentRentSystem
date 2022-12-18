@@ -1,4 +1,10 @@
-﻿@model ApartmentDetailsModel
+﻿@using ApartmentRentSystem.Core.Contracts
+@using ApartmentRentSystem.Infrastructure
+@model ApartmentDetailsModel
+@inject IApartmentsService apartmentsService
+@inject IAgentService agentService
+@inject IRentService rentService
+
 @{
     ViewBag.Title = "House Details";
 }
@@ -25,18 +31,20 @@
             <div class="form-inline">
                 @if (this.User.Identity.IsAuthenticated)
                 {
-                            <a class="btn btn-warning" asp-controller="Apartments" asp-action="Edit"
+                    if(this.agentService.HasAgentWithId(Model.Id, this.User.Id())){
+                                <a class="btn btn-warning" asp-controller="Apartments" asp-action="Edit"
                        asp-route-id="@Model.Id">Edit</a>
-                            <a class="ml-2 btn btn-danger" asp-controller="Apartments" asp-action="Delete"
+                                    <a class="ml-2 btn btn-danger" asp-controller="Apartments" asp-action="Delete"
                        asp-route-id="@Model.Id">Delete</a>
-                    @if (!Model.IsRented)
+                    }
+                    @if (!Model.IsRented && this.agentService.ExistsById(this.User.Id()))
                     {
                                         <form class="ml-2" asp-controller="Apartments"
                               asp-action="Rent" asp-route-id="@Model.Id" method="post">
                                     <input class="btn btn-primary" type="submit" value="Rent" />
                                 </form>
                     }
-                    else
+                    else if(this.rentService.ByUserId(Model.Id, this.User.Id()))
                     {
                                 <form class="ml-2" asp-controller="Apartments" asp-action="Leave"
                               asp-route-id="@Model.Id" method="post">
