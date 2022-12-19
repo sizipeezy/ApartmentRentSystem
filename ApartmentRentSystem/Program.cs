@@ -66,5 +66,5 @@ app.UseEndpoints(endpoints =>
     endpoints.MapRazorPages();
 
 });
-
+app.UseAuthentication();;
 app.Run();
