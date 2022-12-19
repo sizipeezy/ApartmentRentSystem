@@ -13,6 +13,7 @@
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IRentService, RentService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
+            services.AddScoped<IUserService, UserService>();    
 
             return services;
         }

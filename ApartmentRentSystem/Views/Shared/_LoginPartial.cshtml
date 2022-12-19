@@ -5,6 +5,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject IAgentService service
+@inject IUserService userService;
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
@@ -16,7 +17,14 @@
         </li>
     }
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        @if(this.userService.GetUserName(this.User.Id()) is var fullName && fullName != null)
+        {
+            <a class="nav-link text-dark">Hello, @fullName</a>
+        }
+        else
+        {
+            <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        }
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
