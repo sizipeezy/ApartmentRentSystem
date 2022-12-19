@@ -9,10 +9,12 @@
     public class ApartmentsService : IApartmentsService
     {
         private readonly ApplicationDbContext data;
+        private readonly IUserService userService;
 
-        public ApartmentsService(ApplicationDbContext db)
+        public ApartmentsService(ApplicationDbContext db, IUserService userService)
         {
             this.data = db;
+            this.userService = userService;
         }
 
         public void AddAsync(AddApartmentModel model, int agentId)
@@ -104,6 +106,7 @@
                     PricePerMonth = x.PricePerMonth,
                     Agent = new AgentModel
                     {
+                        FullName = this.userService.GetUserName(x.Agent.UserId),
                         Email = x.Agent.User.Email,
                         PhoneNumber = x.Agent.PhoneNumber
                     }

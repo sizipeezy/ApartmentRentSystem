@@ -7,5 +7,7 @@
     {
         [Required]
         public string Email { get; set; } = null!;
+
+        public string FullName { get; init; }
     }
 }
