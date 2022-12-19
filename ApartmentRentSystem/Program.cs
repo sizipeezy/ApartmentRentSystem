@@ -1,5 +1,6 @@
 using ApartmentRentSystem.Extensions;
 using ApartmentRentSystem.Infrastructure.Data;
+using ApartmentRentSystem.Infrastructure.Data.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,8 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddAplicationServices();
 
 var app = builder.Build();
+
+AdminConfiguration.SeedAdmin(app);
 
 if (app.Environment.IsDevelopment())
 {
