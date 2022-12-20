@@ -10,7 +10,7 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    if (service.ExistsById(this.User.Id()))
+    if (!service.ExistsById(this.User.Id()))
     {
         <li class="nav-item">
             <a  class="nav-link text-dark" asp-area="" asp-controller="Agents" asp-action="Become">Become Agent</a>

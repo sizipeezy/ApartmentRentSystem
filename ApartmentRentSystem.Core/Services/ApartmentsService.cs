@@ -4,17 +4,21 @@
     using ApartmentRentSystem.Core.Models;
     using ApartmentRentSystem.Core.Models.Agents;
     using ApartmentRentSystem.Infrastructure.Data;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using System.Collections.Generic;
 
     public class ApartmentsService : IApartmentsService
     {
         private readonly ApplicationDbContext data;
         private readonly IUserService userService;
+        private readonly IMapper mapper;
 
-        public ApartmentsService(ApplicationDbContext db, IUserService userService)
+        public ApartmentsService(ApplicationDbContext db, IUserService userService, IMapper mapper)
         {
             this.data = db;
             this.userService = userService;
+            this.mapper = mapper;
         }
 
         public void AddAsync(AddApartmentModel model, int agentId)
@@ -61,15 +65,7 @@
             result.AllApartments = apartmentsQuery
                 .Skip((currentPage - 1) * apartmentsPerPage)
                 .Take(apartmentsPerPage)
-                .Select(x => new ApartmentModel()
-                {
-                    Id = x.Id,
-                    Address = x.Address,
-                    ImageUrl = x.ImageUrl,
-                    IsRented = x.RenterId != null,
-                    PricePerMonth = x.PricePerMonth,
-                    Title = x.Title
-                })
+                .ProjectTo<ApartmentModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
             result.TotalApartments = apartmentsQuery.Count();
@@ -79,17 +75,23 @@
 
         public IEnumerable<ApartmentModel> AllApartmentsByAgent(int agentId)
         {
-            var apartments = this.data.Apartments.Where(c => c.IsActive)
-                .Where(c => c.AgentId == agentId).ToList();
+            var apartments = this.data.Apartments
+                .Where(c => c.IsActive)
+                .Where(c => c.AgentId == agentId)
+                .ProjectTo<ApartmentModel>(this.mapper.ConfigurationProvider)
+                .ToList();
 
-            return ProjectToApartment(apartments);
+            return apartments;
         }
 
         public IEnumerable<ApartmentModel> AllApartmentsByUser(string userId)
         {
-            var apartments = this.data.Apartments.Where(x => x.RenterId == userId).ToList();
+            var apartments = this.data.Apartments
+                .Where(x => x.RenterId == userId)
+                .ProjectTo<ApartmentModel>(this.mapper.ConfigurationProvider)
+                .ToList();
 
-            return ProjectToApartment(apartments);
+            return apartments;
         }
 
         public ApartmentDetailsModel ApartmentDetailsById(int id)
@@ -142,30 +144,10 @@
         public bool Exists(int id) => this.data.Apartments.Any(x => x.Id == id);
 
         public IEnumerable<IndexViewModel> GetLastThree()
-            => this.data.Apartments.OrderByDescending(x => x.Id)
-            .Select(x => new IndexViewModel
-            {
-                Id = x.Id,
-                ImageUrl = x.ImageUrl,
-                Title = x.Title,
-                Address = x.Address
-            }).Take(3).ToList();
+            => this.data.Apartments
+            .OrderByDescending(x => x.Id)
+            .ProjectTo<IndexViewModel>(this.mapper.ConfigurationProvider)
+            .Take(3).ToList();
 
-        public List<ApartmentModel> ProjectToApartment(List<Apartment> apartments)
-        {
-            var result = apartments
-                .Select(x => new ApartmentModel
-                {
-                    Id = x.Id,
-                    Address = x.Address,
-                    ImageUrl = x.ImageUrl,
-                    IsRented = x.RenterId != null,
-                    PricePerMonth = x.PricePerMonth,
-                    Title = x.Title
-                })
-                .ToList();
-
-            return result;
-        }
     }
 }
