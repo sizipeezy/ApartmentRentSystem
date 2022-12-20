@@ -97,23 +97,8 @@
         public ApartmentDetailsModel ApartmentDetailsById(int id)
         {
             var apartment = this.data.Apartments.Where(x => x.Id == id)
-                .Select(x => new ApartmentDetailsModel
-                {
-                    Id = x.Id,
-                    Address = x.Address,
-                    Category = x.Category.Name,
-                    Description = x.Description,
-                    ImageUrl = x.ImageUrl,
-                    Title = x.Title,
-                    PricePerMonth = x.PricePerMonth,
-                    Agent = new AgentModel
-                    {
-                        FullName = this.userService.GetUserName(x.Agent.UserId),
-                        Email = x.Agent.User.Email,
-                        PhoneNumber = x.Agent.PhoneNumber
-                    }
-
-                }).FirstOrDefault();
+                .ProjectTo<ApartmentDetailsModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault();
 
             return apartment;
         }
