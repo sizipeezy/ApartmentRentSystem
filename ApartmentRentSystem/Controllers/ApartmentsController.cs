@@ -4,6 +4,7 @@
     using ApartmentRentSystem.Core.Models;
     using ApartmentRentSystem.Extensions;
     using ApartmentRentSystem.Infrastructure;
+    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -13,16 +14,19 @@
         private readonly ICategoryService categoryService;
         private readonly IAgentService agentService;
         private readonly IRentService rentService;
+        private readonly IMapper mapper;
         public ApartmentsController(
             IApartmentsService apartmentsService,
             ICategoryService categoryService,
             IAgentService agentService,
-            IRentService rentService)
+            IRentService rentService,
+            IMapper mapper)
         {
             this.apartmentsService = apartmentsService;
             this.categoryService = categoryService;
             this.agentService = agentService;
             this.rentService = rentService;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -131,17 +135,10 @@
 
             var categoryId = this.categoryService.GetApartmentCategoryId(apartment.Id);
 
-            var apartmentModel = new AddApartmentModel
-            {
-                Id = apartment.Id,
-                Address = apartment.Address,
-                CategoryId = categoryId,
-                Description = apartment.Description,
-                PricePerMonth = apartment.PricePerMonth,
-                ImageUrl = apartment.ImageUrl,
-                ApartmentCategories = this.categoryService.AllCategories(),
-                Title = apartment.Title
-            };
+            var apartmentModel = this.mapper.Map<AddApartmentModel>(apartment);
+
+            apartmentModel.CategoryId = categoryId;
+            apartmentModel.ApartmentCategories = categoryService.AllCategories();
 
             return this.View(apartmentModel); 
         }

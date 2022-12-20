@@ -1,3 +1,5 @@
+using ApartmentRentSystem.Controllers;
+using ApartmentRentSystem.Core.Contracts;
 using ApartmentRentSystem.Extensions;
 using ApartmentRentSystem.Infrastructure.Data;
 using ApartmentRentSystem.Infrastructure.Data.Configuration;
@@ -30,6 +32,9 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 });
 builder.Services.AddAplicationServices();
+builder.Services.AddAutoMapper(
+    typeof(IApartmentsService).Assembly,
+    typeof(ApartmentsController).Assembly);
 
 var app = builder.Build();
 
