@@ -91,7 +91,7 @@
 
             apartmentsService.AddAsync(model, agentId);
 
-            return this.RedirectToAction(nameof(Details), new { id = model.Id, information = model.GetInformation() });
+            return this.RedirectToAction(nameof(All));
         }
 
         [HttpGet]
@@ -123,6 +123,10 @@
                 return BadRequest();
             }
 
+            if (!this.agentService.HasAgentWithId(id, this.User.Id())
+                && !this.User.IsAdmin())
+                Unauthorized();
+
             var apartment = this.apartmentsService.ApartmentDetailsById(id);
 
             var categoryId = this.categoryService.GetApartmentCategoryId(apartment.Id);
@@ -150,10 +154,9 @@
                 return BadRequest();
             }
 
-            if(!this.agentService.HasAgentWithId(id, this.User.Id()))
-            {
-                return Unauthorized();
-            }
+            if (!this.agentService.HasAgentWithId(id, this.User.Id())
+                 && !this.User.IsAdmin())
+                Unauthorized();
 
             if (!this.categoryService.CategoryExists(model.CategoryId))
             {
@@ -178,6 +181,10 @@
                 return BadRequest();
             }
 
+            if (!this.agentService.HasAgentWithId(id, this.User.Id())
+                && !this.User.IsAdmin())
+                Unauthorized();
+
             var viewModel = apartmentsService.ApartmentDetailsById(id);
 
             return this.View(viewModel);
@@ -192,10 +199,9 @@
                 return BadRequest();
             }
 
-            if (!this.agentService.HasAgentWithId(model.Id, this.User.Id()))
-            {
-                return Unauthorized();
-            }
+            if (!this.agentService.HasAgentWithId(id, this.User.Id())
+                  && !this.User.IsAdmin())
+                Unauthorized();
 
             this.apartmentsService.Delete(id);
 
@@ -215,7 +221,8 @@
                 return BadRequest();
             }
 
-            if(!this.agentService.ExistsById(this.User.Id()))
+            if(!this.agentService.ExistsById(this.User.Id()) &&
+                !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
