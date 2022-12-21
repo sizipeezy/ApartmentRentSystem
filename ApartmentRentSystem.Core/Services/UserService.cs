@@ -1,10 +1,11 @@
 ﻿namespace ApartmentRentSystem.Core.Services
 {
     using ApartmentRentSystem.Core.Contracts;
+    using ApartmentRentSystem.Core.Models.Users;
     using ApartmentRentSystem.Infrastructure.Data;
     using Microsoft.AspNetCore.Identity;
     using System;
-
+    using System.Collections.Generic;
 
     public class UserService : IUserService
     {
@@ -26,6 +27,11 @@
             }
 
             return user.FirstName + " " + user.LastName;
+        }
+
+        public IEnumerable<UserModel> GetUsers()
+        {
+            throw new NotImplementedException();
         }
     }
 }
