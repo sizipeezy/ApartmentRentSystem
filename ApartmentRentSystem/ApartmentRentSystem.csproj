@@ -24,4 +24,8 @@
     <ProjectReference Include="..\ApartmentRentSystem.Core\ApartmentRentSystem.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+
 </Project>

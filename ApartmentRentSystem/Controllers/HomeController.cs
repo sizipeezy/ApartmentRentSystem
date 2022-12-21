@@ -5,7 +5,7 @@
     using ApartmentRentSystem.Models;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
-
+    using static AdminConstants;
 
     public class HomeController : Controller
     {
@@ -18,6 +18,11 @@
 
         public IActionResult Index()
         {
+            if (this.User.IsInRole(AdminRoleName))
+            {
+                return this.RedirectToAction("Index", "Home", new { area = "Admin" });
+            }
+
             var apartments = this.apartmentService.GetLastThree();
 
             return this.View(apartments);
