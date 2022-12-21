@@ -3,18 +3,21 @@
     using ApartmentRentSystem.Core.Contracts;
     using ApartmentRentSystem.Core.Models.Users;
     using ApartmentRentSystem.Infrastructure.Data;
-    using Microsoft.AspNetCore.Identity;
-    using System;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
+    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
 
     public class UserService : IUserService
     {
 
         private readonly ApplicationDbContext data;
+        private readonly IMapper mapper;
 
-        public UserService(ApplicationDbContext data)
+        public UserService(ApplicationDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
 
         public string GetUserName(string userId)
@@ -31,7 +34,27 @@
 
         public IEnumerable<UserModel> GetUsers()
         {
-            throw new NotImplementedException();
+            var result = new List<UserModel>();
+
+           var allUsers =  
+                this.data
+                .Agents
+                .Include(x => x.User)
+                .ProjectTo<UserModel>(this.mapper.ConfigurationProvider)
+                .ToList();
+
+            result.AddRange(allUsers);
+
+            var allAgents = 
+                this.data
+                .Users
+                .Where(z => !this.data.Agents.Any(x => x.UserId == z.Id))
+                .ProjectTo<UserModel>(this.mapper.ConfigurationProvider)
+                .ToList();
+
+            result.AddRange(allAgents);
+
+            return result;
         }
     }
 }
