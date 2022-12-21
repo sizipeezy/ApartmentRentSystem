@@ -1,5 +1,6 @@
 ﻿namespace ApartmentRentSystem.Core.Infrastructure
 {
+    using ApartmentRentSystem.Areas.Admin.Models;
     using ApartmentRentSystem.Core.Models;
     using ApartmentRentSystem.Core.Models.Agents;
     using ApartmentRentSystem.Core.Models.Categories;
@@ -33,6 +34,15 @@
             this.CreateMap<ApplicationUser, UserModel>()
                 .ForMember(x => x.PhoneNumber, cfg => cfg.MapFrom(a => string.Empty))
                 .ForMember(x => x.FullName, cfg => cfg.MapFrom(a => a.FirstName + " " + a.LastName));
+
+            this.CreateMap<Apartment, RentModel>()
+                .ForMember(x => x.ApartmentTitle, cfg => cfg.MapFrom(x => x.Title))
+                .ForMember(x => x.ImageUrl, cfg => cfg.MapFrom(c => c.ImageUrl))
+                .ForMember(c => c.AgentFullName, cfg => cfg.MapFrom(h => h.Agent.User.FirstName + " "
+                + h.Agent.User.LastName))
+                .ForMember(x => x.RenterFullName, cfg =>
+                cfg.MapFrom(c => c.Renter.FirstName + " " + c.Renter.LastName))
+                .ForMember(x => x.RenterEmail, cfg => cfg.MapFrom(c => c.Renter.Email));
         }
     }
 }

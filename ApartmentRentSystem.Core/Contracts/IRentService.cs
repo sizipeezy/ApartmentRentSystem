@@ -1,5 +1,7 @@
 ﻿namespace ApartmentRentSystem.Core.Contracts
 {
+    using ApartmentRentSystem.Areas.Admin.Models;
+
     public interface IRentService
     {
         bool IsRented(int id);
@@ -9,5 +11,7 @@
         void Rent(int apartmentId, string userId);
 
         void Leave(int apartmentId);
+
+        IEnumerable<RentModel> All();
     }
 }
