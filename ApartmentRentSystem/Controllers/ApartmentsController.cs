@@ -7,7 +7,9 @@
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
     using static ApartmentRentSystem.Core.Constants.MessageConstant;
+    using static AdminConstants;
 
     public class ApartmentsController : Controller
     {
@@ -16,18 +18,21 @@
         private readonly IAgentService agentService;
         private readonly IRentService rentService;
         private readonly IMapper mapper;
+        private readonly IMemoryCache memoryCache;
         public ApartmentsController(
             IApartmentsService apartmentsService,
             ICategoryService categoryService,
             IAgentService agentService,
             IRentService rentService,
-            IMapper mapper)
+            IMapper mapper,
+            IMemoryCache memoryCache)
         {
             this.apartmentsService = apartmentsService;
             this.categoryService = categoryService;
             this.agentService = agentService;
             this.rentService = rentService;
             this.mapper = mapper;
+            this.memoryCache = memoryCache;
         }
 
         [HttpGet]
@@ -232,6 +237,8 @@
 
             this.rentService.Rent(id, this.User.Id());
 
+            this.memoryCache.Remove(AdminConstants.RentsCacheKey);
+
             TempData[SuccessMessage] = "Successfully rented apartment!";
 
             return this.RedirectToAction(nameof(Mine));
@@ -251,6 +258,9 @@
             }
 
             this.rentService.Leave(id);
+
+            this.memoryCache.Remove(AdminConstants.RentsCacheKey);
+    
             TempData[WarningMessage] = "Successfully leaved apartment";
 
             return this.RedirectToAction(nameof(Mine));
