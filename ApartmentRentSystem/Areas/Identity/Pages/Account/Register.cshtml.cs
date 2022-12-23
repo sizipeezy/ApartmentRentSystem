@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Caching.Memory;
 using System.ComponentModel.DataAnnotations;
 
 namespace ApartmentRentSystem.Areas.Identity.Pages.Account
@@ -20,13 +21,15 @@ namespace ApartmentRentSystem.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IMemoryCache memoryCache;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IMemoryCache memoryCache)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -34,6 +37,7 @@ namespace ApartmentRentSystem.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            this.memoryCache = memoryCache;
         }
 
         [BindProperty]
@@ -100,6 +104,9 @@ namespace ApartmentRentSystem.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     await this._signInManager.SignInAsync(user, isPersistent: false);
+
+                    this.memoryCache.Remove(AdminConstants.UsersCacheKey);
+
                     return LocalRedirect("~/Login");
                 }
 
