@@ -5,7 +5,7 @@
     using ApartmentRentSystem.Core.Models.Agents;
     using ApartmentRentSystem.Infrastructure;
     using Microsoft.AspNetCore.Mvc;
-
+    using static ApartmentRentSystem.Core.Constants.MessageConstant;
 
     public class AgentsController : Controller
     {
@@ -61,6 +61,8 @@
             }
 
             await agentService.Create(userId, model.PhoneNumber);
+
+            TempData[SuccessMessage] = "You have became Agent successfully!";
 
             return RedirectToAction("All", "Apartments");
         }

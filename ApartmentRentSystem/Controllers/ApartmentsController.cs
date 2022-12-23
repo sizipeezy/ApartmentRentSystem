@@ -7,6 +7,7 @@
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using static ApartmentRentSystem.Core.Constants.MessageConstant;
 
     public class ApartmentsController : Controller
     {
@@ -94,6 +95,7 @@
             var agentId = agentService.GetAgentId(this.User.Id());
 
             apartmentsService.AddAsync(model, agentId);
+            TempData[SuccessMessage] = "You have successfully added a apartment!";
 
             return this.RedirectToAction(nameof(All));
         }
@@ -167,6 +169,8 @@
 
             this.apartmentsService.Edit(id, model);
 
+            TempData[WarningMessage] = "You have successfully edited a Apartment.";
+
             return this.RedirectToAction(nameof(Details), new { id = id , information = model.GetInformation()});
         }
 
@@ -202,6 +206,8 @@
 
             this.apartmentsService.Delete(id);
 
+            TempData[WarningMessage] = "You have successfully removed an Apartment!";
+
             return this.RedirectToAction(nameof(All));
         }
 
@@ -226,6 +232,8 @@
 
             this.rentService.Rent(id, this.User.Id());
 
+            TempData[SuccessMessage] = "Successfully rented apartment!";
+
             return this.RedirectToAction(nameof(Mine));
         }
 
@@ -243,6 +251,7 @@
             }
 
             this.rentService.Leave(id);
+            TempData[WarningMessage] = "Successfully leaved apartment";
 
             return this.RedirectToAction(nameof(Mine));
         }
