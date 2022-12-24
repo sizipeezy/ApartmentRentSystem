@@ -1,0 +1,108 @@
+﻿@model ShoppingCartViewModel
+
+@{ 
+    ViewData["Title"] = "Shopping cart summary";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="text-center">
+            <h2>You shopping cart summary</h2>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Selected amount</th>
+                    <th>Apartment</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Cart.Items)
+                {
+                        <tr>
+                            <td class="align-middle">@item.Quantity</td>
+                            <td class="align-middle">@item.Apartment.Title</td>
+                            <td class="align-middle">@item.Apartment.PricePerMonth.ToString("c")</td>
+                            <td class="align-middle">@((item.Quantity * item.Apartment.PricePerMonth).ToString("c"))</td>
+                            <td class="align-middle">
+
+                                <td>
+                                    <form method="post" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart" asp-route-movieId="@item.Apartment.Id">
+                                     <input type="submit" value="Remove" class="btn btn-danger"/> 
+                                     </form>
+                                </td>
+                                <td>
+                                     <form method="post" asp-controller="Orders" asp-action="Add" asp-route-movieId="@item.Apartment.Id">
+                                         <input type="submit" value="Add" class="btn btn-outline-success"/> 
+                                         <i></i>
+                                     </form>
+                                </td>
+
+                            </td>
+                        </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Total:</b></td>
+                    <td>
+                        @Model.Total.ToString("c")
+                    </td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="text-right">
+            <div class="btn-group">
+                <a class="btn btn-outline-primary" asp-controller="Orders" asp-action="ProceedOrder">
+                    Proceed Order
+                </a>
+                 <div id="paypal-btn"></div>
+                <span style="padding:5px"></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts{
+         <script src="https://www.paypalobjects.com/api/checkout.js"></script> 
+         <script>
+             let _total = @Html.Raw(Model.Total);
+             paypal.Button.render({
+                 //Configure environment
+                 env: 'sandbox',
+                 client: {
+                     sandbox: 'AcKRtgL4i68EZ2ZYuYUx3ilihAg2YhL5dtF_m19A8MjBWVOn6ewNS4M_uV8gA3xi98zTcUq38gUHbVFx'
+                 },
+                 //Customize button
+                 locale: 'en_US',
+                 style: {
+                     size: 'small',
+                     color: 'gold',
+                     shape: 'pill'
+                 },
+                 commit: true,
+                 //Set up a payment
+                  payment: function (data, actions) {
+                             return actions.payment.create({
+                                    transactions: [{
+                                        amount: {
+                                            total: _total,
+                                            currency: 'USD'
+                                        }
+                                    }]
+                                });
+                  },
+                 //Execute the payment
+                 onAuthorize: function (data, actions) {
+                     console.log("payment executed");
+                 }
+             }, '#paypal-btn')
+         </script>
+}

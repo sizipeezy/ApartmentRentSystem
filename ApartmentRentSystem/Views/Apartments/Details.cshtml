@@ -41,10 +41,13 @@
                     @if (!Model.IsRented && this.agentService.ExistsById(this.User.Id()) || 
                     this.User.IsAdmin())
                     {
-                                        <form class="ml-2" asp-controller="Apartments"
-                              asp-action="Rent" asp-route-id="@Model.Id" method="post">
-                                    <input class="btn btn-primary" type="submit" value="Rent" />
-                                </form>
+                          <form class="ml-2" asp-controller="Apartments" asp-action="Rent" asp-route-id="@Model.Id" method="post">
+                          <input class="btn btn-primary" type="submit" value="Rent" />
+                         </form>
+
+                         <form class="input-group-sm" asp-route-id="@Model.Id" asp-controller="Orders" asp-action="Add" method="post">
+                         <button type="submit" class="btn btn-primary"><span class="bi bi-bag-plus-fill"></span>Add to Cart (Price @Model.PricePerMonth.ToString("c"))</button>
+                         </form>
                     }
                     else if(this.rentService.ByUserId(Model.Id, this.User.Id()))
                     {

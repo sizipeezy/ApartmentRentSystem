@@ -6,6 +6,7 @@
     using ApartmentRentSystem.Infrastructure.Data;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
 
     public class ApartmentsService : IApartmentsService
@@ -127,6 +128,13 @@
         }
 
         public bool Exists(int id) => this.data.Apartments.Any(x => x.Id == id);
+
+        public Apartment Get(int id)
+            => this.data.Apartments
+            .Where(x => x.IsActive)
+            .Include(x => x.Category)
+            .Include(x => x.Agent)
+            .FirstOrDefault(x => x.Id == id);
 
         public IEnumerable<IndexViewModel> GetLastThree()
             => this.data.Apartments

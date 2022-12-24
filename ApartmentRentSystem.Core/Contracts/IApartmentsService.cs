@@ -1,10 +1,12 @@
 ﻿namespace ApartmentRentSystem.Core.Contracts
 {
     using ApartmentRentSystem.Core.Models;
+    using ApartmentRentSystem.Infrastructure.Data;
     using System.Collections.Generic;
 
     public interface IApartmentsService
     {
+        Apartment Get(int id);
         void Delete(int id);
         void Edit(int apartmentId, AddApartmentModel model);
         bool Exists(int id);

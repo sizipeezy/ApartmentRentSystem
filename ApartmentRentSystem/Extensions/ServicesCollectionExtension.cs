@@ -2,6 +2,7 @@
 {
     using ApartmentRentSystem.Core.Contracts;
     using ApartmentRentSystem.Core.Services;
+    using ApartmentRentSystem.Infrastructure.Data;
 
     public static class ServicesCollectionExtension
     {
@@ -13,7 +14,11 @@
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IRentService, RentService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
-            services.AddScoped<IUserService, UserService>();    
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(s => ShoppingCart.GetShoppingCart(s));
+            services.AddSession();
 
             return services;
         }

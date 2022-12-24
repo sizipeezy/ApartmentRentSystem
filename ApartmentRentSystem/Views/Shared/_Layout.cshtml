@@ -44,6 +44,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                             <ul class="navbar-nav"> 
+                            @await Component.InvokeAsync("ShoppingCartSummary")
+                             </ul>
+                    }
                     <partial name="_LoginPartial" />
                 </div>
             </div>

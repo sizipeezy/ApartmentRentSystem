@@ -45,11 +45,9 @@
             .Select(x => x.Apartment.PricePerMonth * x.Quantity)
             .Sum();
 
-        public void Add(int id)
+        public void Add(Apartment apartment)
         {
-            var item = this.data.Items.FirstOrDefault(x => x.Id == id && x.ShoppingCartId == ShoppingCartId);
-
-            var apartment = this.data.Apartments.FirstOrDefault(x => x.Id == id);
+            var item = this.data.Items.FirstOrDefault(x => x.Apartment.Id == apartment.Id && x.ShoppingCartId == ShoppingCartId);
 
             if(item == null)
             {
