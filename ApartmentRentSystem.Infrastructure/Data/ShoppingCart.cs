@@ -42,7 +42,7 @@
         public double Total() =>
             (double)this.data.Items
             .Where(x => x.ShoppingCartId == ShoppingCartId)
-            .Select(x => x.Apartment.PricePerMonth * x.Quantity)
+            .Select(x => x.Apartment.PricePerMonth * 3)
             .Sum();
 
         public void Add(Apartment apartment)
@@ -63,6 +63,23 @@
             else
             {
                 item.Quantity++;
+            }
+
+            data.SaveChanges();
+        }
+
+        public void Remove(Apartment apartment)
+        {
+            var item = this.data.Items.FirstOrDefault(x => x.Apartment.Id == apartment.Id && x.ShoppingCartId == ShoppingCartId);
+
+            if(item != null)
+            {
+                if(item.Quantity > 1)
+                {
+                    item.Quantity--;
+                }
+
+                data.Items.Remove(item);
             }
 
             data.SaveChanges();

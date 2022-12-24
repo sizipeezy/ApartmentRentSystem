@@ -33,9 +33,10 @@
             return View(viewModel);
         }
 
+        [HttpPost]
         public IActionResult Add(int id)
         {
-            var item = this.apartmentService.Get(id);
+            var item = this.apartmentService.Get(id); 
 
             if (item != null)
                 shoppingCart.Add(item);
@@ -45,6 +46,21 @@
             TempData[MessageConstant.SuccessMessage] = "Apartment was added successfully to bag!";
 
             return this.RedirectToAction(nameof(ShoppingCart));
+        }
+
+        [HttpPost]
+        public IActionResult Remove(int apartmentId)
+        {
+            var item = this.apartmentService.Get(apartmentId);
+
+            if (item != null)
+                shoppingCart.Remove(item);
+            else
+                return BadRequest();
+
+            TempData[MessageConstant.WarningMessage] = "Apartment was removed successfully!";
+
+            return this.RedirectToAction(nameof(shoppingCart));
         }
     }
 }
