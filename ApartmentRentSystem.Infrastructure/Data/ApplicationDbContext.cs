@@ -17,6 +17,12 @@
 
         public DbSet<Agent> Agents { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
+
+        public DbSet<Item> Items { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Apartment>()
@@ -31,11 +37,14 @@
                 .HasForeignKey(x => x.AgentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<OrderItem>()
+                .HasKey(x => new { x.OrderId, x.ApartmentId });
 
-            builder.ApplyConfiguration(new UserConfiguration());
-            builder.ApplyConfiguration(new AgentConfiguration());
-            builder.ApplyConfiguration(new CategoryConfiguration());
-            builder.ApplyConfiguration(new ApartmentConfiguration());
+
+           builder.ApplyConfiguration(new UserConfiguration());
+           builder.ApplyConfiguration(new AgentConfiguration());
+           builder.ApplyConfiguration(new CategoryConfiguration());
+           builder.ApplyConfiguration(new ApartmentConfiguration());
 
             base.OnModelCreating(builder);
         }
