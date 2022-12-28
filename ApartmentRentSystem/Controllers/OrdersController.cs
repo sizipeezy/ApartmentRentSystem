@@ -69,6 +69,26 @@
             return this.RedirectToAction(nameof(shoppingCart));
         }
 
-      
+        [HttpPost]
+        public async Task<IActionResult> CompleteOrder()
+        {
+            var items = shoppingCart.GetItems();
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
+
+            var model = new StoreOrderModel()
+            {
+                EmailAddress = userEmailAddress,
+                Items = items,
+                UserId = userId,
+            };
+
+             await orderService.StoreOrder(model);
+             await shoppingCart.ClearCart();
+
+            TempData[MessageConstant.SuccessMessage] = "Order completed!";
+
+            return this.RedirectToAction(nameof(ShoppingCart));
+        }
     }
 }

@@ -60,9 +60,9 @@
 
         <div class="text-right">
             <div class="btn-group">
-                <a class="btn btn-outline-primary" asp-controller="Orders" asp-action="ProceedOrder">
-                    Proceed Order
-                </a>
+                <form method="post" asp-controller="Orders" asp-action="CompleteOrder">
+                   <input type="submit" value="CompleteOrder" class="btn btn-outline-success"/> 
+               </form>
                  <div id="paypal-btn"></div>
                 <span style="padding:5px"></span>
             </div>
