@@ -84,5 +84,14 @@
 
             data.SaveChanges();
         }
+
+        public async Task ClearCart()
+        {
+            var items = await data.Items.Where(x => x.ShoppingCartId == ShoppingCartId).ToListAsync();
+
+            data.Items.RemoveRange(items);
+
+            await data.SaveChangesAsync();
+        }
     }
 }

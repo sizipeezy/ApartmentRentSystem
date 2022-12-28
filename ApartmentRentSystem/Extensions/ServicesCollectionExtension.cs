@@ -15,6 +15,7 @@
             services.AddScoped<IRentService, RentService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped(s => ShoppingCart.GetShoppingCart(s));

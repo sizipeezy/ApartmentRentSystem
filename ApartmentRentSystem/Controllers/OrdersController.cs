@@ -2,20 +2,26 @@
 {
     using ApartmentRentSystem.Core.Constants;
     using ApartmentRentSystem.Core.Contracts;
+    using ApartmentRentSystem.Core.Models.Orders;
     using ApartmentRentSystem.Core.Models.ShoppingCart;
     using ApartmentRentSystem.Infrastructure.Data;
     using Microsoft.AspNetCore.Mvc;
-
+    using System.Security.Claims;
 
     public class OrdersController : Controller
     {
         private readonly ShoppingCart shoppingCart;
         private readonly IApartmentsService apartmentService;
+        private readonly IOrderService orderService;
 
-        public OrdersController(ShoppingCart shoppingCart, IApartmentsService apartmentService)
+        public OrdersController(
+            ShoppingCart shoppingCart,
+            IApartmentsService apartmentService,
+            IOrderService orderService)
         {
             this.shoppingCart = shoppingCart;
             this.apartmentService = apartmentService;
+            this.orderService = orderService;
         }
 
 
@@ -62,5 +68,7 @@
 
             return this.RedirectToAction(nameof(shoppingCart));
         }
+
+      
     }
 }
