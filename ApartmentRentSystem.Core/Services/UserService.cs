@@ -56,5 +56,8 @@
 
             return result;
         }
+
+          public bool UserIdExists(string userId) =>
+        this.data.Users.Any(x => x.Id == userId);
     }
 }

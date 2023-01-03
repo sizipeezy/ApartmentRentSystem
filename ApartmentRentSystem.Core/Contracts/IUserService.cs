@@ -7,5 +7,7 @@ namespace ApartmentRentSystem.Core.Contracts
         string GetUserName(string userId);
 
         IEnumerable<UserModel> GetUsers();
+
+        bool UserIdExists(string userId);
     }
 }

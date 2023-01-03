@@ -17,6 +17,7 @@
         private readonly ICategoryService categoryService;
         private readonly IAgentService agentService;
         private readonly IRentService rentService;
+        private readonly IUserService userService;
         private readonly IMapper mapper;
         private readonly IMemoryCache memoryCache;
         public ApartmentsController(
@@ -25,7 +26,8 @@
             IAgentService agentService,
             IRentService rentService,
             IMapper mapper,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            IUserService userService)
         {
             this.apartmentsService = apartmentsService;
             this.categoryService = categoryService;
@@ -33,6 +35,7 @@
             this.rentService = rentService;
             this.mapper = mapper;
             this.memoryCache = memoryCache;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -229,8 +232,8 @@
                 return BadRequest();
             }
 
-            if(!this.agentService.ExistsById(this.User.Id()) &&
-                !this.User.IsAdmin())
+            if(!this.userService.UserIdExists(this.User.Id())
+             && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
