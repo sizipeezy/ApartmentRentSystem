@@ -2,10 +2,9 @@
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class AdminConfiguration
+    public static class AdminConfiguration
     {
         public static async void SeedAdmin(IApplicationBuilder builder)
         {

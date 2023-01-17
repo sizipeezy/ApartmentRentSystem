@@ -3,7 +3,6 @@
     using ApartmentRentSystem.Core.Models;
     using AutoMapper;
 
-
     public class ControllerMappingProfile : Profile
     {
         public ControllerMappingProfile()

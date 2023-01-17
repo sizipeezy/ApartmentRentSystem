@@ -3,6 +3,7 @@ using ApartmentRentSystem.Core.Contracts;
 using ApartmentRentSystem.Extensions;
 using ApartmentRentSystem.Infrastructure.Data;
 using ApartmentRentSystem.Infrastructure.Data.Configuration;
+using ApartmentRentSystem.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,8 @@ else
     app.UseHsts();
 }
 
+app.UseMiddleware<TimmingMiddleware>();
+
 app.UseStatusCodePagesWithRedirects("/Home/NotFound?statusCode={0}");
 
 app.UseHttpsRedirection()
@@ -82,5 +85,5 @@ endpoints.MapControllerRoute(
     endpoints.MapRazorPages();
 
 });
-app.UseAuthentication();;
+app.UseAuthentication();
 app.Run();
