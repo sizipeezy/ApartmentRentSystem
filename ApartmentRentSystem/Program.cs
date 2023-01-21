@@ -1,6 +1,7 @@
 using ApartmentRentSystem.Controllers;
 using ApartmentRentSystem.Core.Contracts;
 using ApartmentRentSystem.Extensions;
+using ApartmentRentSystem.Filters;
 using ApartmentRentSystem.Infrastructure.Data;
 using ApartmentRentSystem.Infrastructure.Data.Configuration;
 using ApartmentRentSystem.Middleware;
@@ -32,6 +33,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+    options.Filters.Add(new AddHeaderActionFilter());
 });
 builder.Services.AddAplicationServices();
 builder.Services.AddMemoryCache();
