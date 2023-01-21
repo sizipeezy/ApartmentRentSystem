@@ -32,17 +32,17 @@
                
                     <p></p>
                 @if (!Model.IsRented && !this.agentService.ExistsById(this.User.Id()) ||
-                this.User.IsAdmin())
+               this.User.IsAdmin() && !Model.IsRented)
                 {
                                     <form class="input-group-sm" asp-area="" asp-controller="Apartments"
                   asp-action="Rent" asp-route-id="@Model.Id" method="post">
                                 <input class="btn btn-primary" type="submit" value="Rent" />
                             </form>
                 }
-                else if(this.rentService.ByUserId(Model.Id, this.User.Id()))
+                else if(Model.IsRented && this.rentService.ByUserId(Model.Id, this.User.Id()) || this.User.IsAdmin())
                 {
                             <form asp-area="" asp-controller="Apartments" asp-action="Leave"
-                  asp-route-id="@Model.Id" method="post">
+                              asp-route-id="@Model.Id" method="post">
                                 <input class="btn btn-primary" type="submit" value="Leave" />
                             </form>
                 }
