@@ -13,7 +13,7 @@ ASP.NET MVC Web App for booking a apartment
 - jQuery plugins (bootstrap-select)
 - xUnit
 - ASP.NET Identity
-- MemoryCache
+- AutoMapper
 
 # Info
 - The "Apartment-Renting-System" 
@@ -21,3 +21,4 @@ ASP.NET MVC Web App for booking a apartment
 - Users can look at all apartments with their details, rent a apartment and look at their rented apartments. They can also become Agents. 
 - Agents can add apartments, see their details and edit and delete only apartments they added. 
 - The Admin has all privileges of Users and Agents and can see all registrations in the app and all made rents.	
+- The Users can buy/rent an apartment for 3-months in their Shopping-Cart also can pay within PayPal
